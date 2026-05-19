@@ -1,2 +1,30 @@
+# Secrets
 .env
+
+# Python
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+
+# Large pipeline-only files (not needed by dashboard)
+youtube_video_data.csv
+youtube_comment_data.csv
+youtube_video_data_cleaned.csv
+youtube_tracking_history.csv
+youtube_video_snapshots.csv
+youtube_tracking_features.csv
+
+# Model files (too large for GitHub free tier)
+*.pkl
+*.parquet
+
+# Logs
+pipeline.log
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
