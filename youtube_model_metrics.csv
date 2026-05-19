@@ -1,0 +1,2 @@
+﻿accuracy,roc_auc,precision,recall,f1_score,mcc,brier_score,log_loss,rmse,mae,mape_viral,test_samples,viral_in_test
+0.9878,0.9977,0.95,0.7983,0.8676,0.8648,0.0081,0.0252,0.0898,0.0159,19.03,2376,119

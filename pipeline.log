@@ -1,0 +1,113 @@
+2026-05-18 13:36:28,701 [INFO] ================================================================
+2026-05-18 13:36:28,701 [INFO] Pipeline started — lookback 120h — since 2026-05-13T08:06:28Z
+2026-05-18 13:36:28,702 [INFO] ================================================================
+2026-05-18 13:36:28,703 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_extraction.py --published-after 2026-05-13T08:06:28Z --incremental
+2026-05-18 13:36:29,783 [ERROR] Stage failed: youtube_data_extraction.py (exit 1)
+2026-05-18 13:36:29,784 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_extraction.py --input youtube_video_data.csv --comment-pages 0 --skip-transcripts
+2026-05-18 13:36:30,685 [ERROR] Stage failed: youtube_tracking_extraction.py (exit 1)
+2026-05-18 13:36:30,685 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_cleaning.py --incremental --skip-translation
+2026-05-18 13:36:32,338 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_feature_engineering.py --incremental
+2026-05-18 13:37:29,515 [ERROR] Stage failed: youtube_feature_engineering.py (exit 120)
+2026-05-18 13:37:29,529 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_updater.py
+2026-05-18 13:37:34,290 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_narrative_detection.py
+2026-05-18 13:37:54,984 [ERROR] Stage failed: youtube_narrative_detection.py (exit 120)
+2026-05-18 13:37:54,986 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_virality_predict.py
+2026-05-18 13:37:58,598 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_alert_engine.py
+2026-05-18 13:37:59,856 [INFO] Pipeline completed at 13:37:59.
+2026-05-18 13:40:48,719 [INFO] Scheduler started — interval 30 min, lookback 2h.
+2026-05-18 13:40:48,720 [INFO] ================================================================
+2026-05-18 13:40:48,720 [INFO] Pipeline started — lookback 2h — since 2026-05-18T06:10:48Z
+2026-05-18 13:40:48,720 [INFO] ================================================================
+2026-05-18 13:40:48,720 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_extraction.py --published-after 2026-05-18T06:10:48Z --incremental
+2026-05-18 13:40:49,503 [ERROR] Stage failed: youtube_data_extraction.py (exit 1)
+2026-05-18 13:40:49,503 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_extraction.py --input youtube_video_data.csv --comment-pages 0 --skip-transcripts
+2026-05-18 13:40:50,272 [ERROR] Stage failed: youtube_tracking_extraction.py (exit 1)
+2026-05-18 13:40:50,273 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_cleaning.py --incremental
+2026-05-18 13:40:51,236 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_feature_engineering.py --incremental
+2026-05-18 13:41:17,301 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_updater.py
+2026-05-18 13:41:26,595 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_narrative_detection.py
+2026-05-18 13:41:39,039 [ERROR] Stage failed: youtube_narrative_detection.py (exit 3221225786)
+2026-05-18 13:41:39,040 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_virality_predict.py
+2026-05-18 13:41:39,555 [INFO] Scheduler started — interval 30 min, lookback 2h.
+2026-05-18 13:41:39,555 [INFO] ================================================================
+2026-05-18 13:41:39,555 [INFO] Pipeline started — lookback 2h — since 2026-05-18T06:11:39Z
+2026-05-18 13:41:39,556 [INFO] ================================================================
+2026-05-18 13:41:39,556 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_extraction.py --published-after 2026-05-18T06:11:39Z --incremental
+2026-05-18 13:42:53,117 [ERROR] Stage failed: youtube_data_extraction.py (exit 1)
+2026-05-18 13:42:53,143 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_extraction.py --input youtube_video_data.csv --comment-pages 0 --skip-transcripts
+2026-05-18 13:42:58,126 [ERROR] Stage failed: youtube_tracking_extraction.py (exit 1)
+2026-05-18 13:42:58,128 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_cleaning.py --incremental
+2026-05-18 13:42:58,829 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_feature_engineering.py --incremental
+2026-05-18 13:43:27,485 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_updater.py
+2026-05-18 13:43:42,606 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_narrative_detection.py
+2026-05-18 13:43:55,992 [ERROR] Stage failed: youtube_narrative_detection.py (exit 3221225786)
+2026-05-18 13:43:55,994 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_virality_predict.py
+2026-05-18 13:44:57,839 [INFO] Scheduler started — interval 30 min, lookback 2h.
+2026-05-18 13:44:57,840 [INFO] ================================================================
+2026-05-18 13:44:57,840 [INFO] Pipeline started — lookback 2h — since 2026-05-18T06:14:57Z
+2026-05-18 13:44:57,840 [INFO] ================================================================
+2026-05-18 13:44:57,841 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_extraction.py --published-after 2026-05-18T06:14:57Z --incremental
+2026-05-18 13:44:58,952 [ERROR] Stage failed: youtube_data_extraction.py (exit 1)
+2026-05-18 13:44:58,953 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_extraction.py --input youtube_video_data.csv --comment-pages 0 --skip-transcripts
+2026-05-18 13:45:00,899 [ERROR] Stage failed: youtube_tracking_extraction.py (exit 1)
+2026-05-18 13:45:00,900 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_cleaning.py --incremental
+2026-05-18 13:45:01,640 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_feature_engineering.py --incremental
+2026-05-18 13:45:23,064 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_updater.py
+2026-05-18 13:45:35,885 [ERROR] Stage failed: youtube_tracking_updater.py (exit 3221225786)
+2026-05-18 13:45:35,902 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_narrative_detection.py
+2026-05-18 13:45:37,699 [INFO] Scheduler started — interval 30 min, lookback 2h.
+2026-05-18 13:45:37,699 [INFO] ================================================================
+2026-05-18 13:45:37,700 [INFO] Pipeline started — lookback 2h — since 2026-05-18T06:15:37Z
+2026-05-18 13:45:37,700 [INFO] ================================================================
+2026-05-18 13:45:37,700 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_extraction.py --published-after 2026-05-18T06:15:37Z --incremental
+2026-05-18 13:46:51,758 [ERROR] Stage failed: youtube_data_extraction.py (exit 1)
+2026-05-18 13:46:51,759 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_extraction.py --input youtube_video_data.csv --comment-pages 0 --skip-transcripts
+2026-05-18 13:46:54,508 [ERROR] Stage failed: youtube_tracking_extraction.py (exit 1)
+2026-05-18 13:46:54,509 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_cleaning.py --incremental
+2026-05-18 13:46:55,133 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_feature_engineering.py --incremental
+2026-05-18 13:47:12,267 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_updater.py
+2026-05-18 13:47:44,697 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_narrative_detection.py
+2026-05-18 13:51:55,470 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_virality_predict.py
+2026-05-18 13:52:20,562 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_alert_engine.py
+2026-05-18 13:52:29,388 [INFO] Pipeline completed at 13:52:29.
+2026-05-18 13:52:29,389 [INFO] Next run in 30 minutes.
+2026-05-18 14:22:29,403 [INFO] ================================================================
+2026-05-18 14:22:29,406 [INFO] Pipeline started — lookback 2h — since 2026-05-18T06:52:29Z
+2026-05-18 14:22:29,406 [INFO] ================================================================
+2026-05-18 14:22:29,409 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_extraction.py --published-after 2026-05-18T06:52:29Z --incremental
+2026-05-18 14:22:30,392 [ERROR] Stage failed: youtube_data_extraction.py (exit 1)
+2026-05-18 14:22:30,393 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_extraction.py --input youtube_video_data.csv --comment-pages 0 --skip-transcripts
+2026-05-18 14:22:31,092 [ERROR] Stage failed: youtube_tracking_extraction.py (exit 1)
+2026-05-18 14:22:31,093 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_cleaning.py --incremental
+2026-05-18 14:22:31,748 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_feature_engineering.py --incremental
+2026-05-18 14:22:50,955 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_updater.py
+2026-05-18 14:23:59,453 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_narrative_detection.py
+2026-05-18 14:24:23,234 [ERROR] Stage failed: youtube_narrative_detection.py (exit 1)
+2026-05-18 14:24:23,235 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_virality_predict.py
+2026-05-18 14:24:46,953 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_alert_engine.py
+2026-05-18 14:24:56,384 [ERROR] Stage failed: youtube_alert_engine.py (exit 1)
+2026-05-18 14:24:56,386 [INFO] Pipeline completed at 14:24:56.
+2026-05-18 14:24:56,387 [INFO] Next run in 30 minutes.
+2026-05-18 14:25:05,496 [INFO] Scheduler started — interval 30 min, lookback 2h.
+2026-05-18 14:25:05,496 [INFO] ================================================================
+2026-05-18 14:25:05,497 [INFO] Pipeline started — lookback 2h — since 2026-05-18T06:55:05Z
+2026-05-18 14:25:05,497 [INFO] ================================================================
+2026-05-18 14:25:05,497 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_extraction.py --published-after 2026-05-18T06:55:05Z --incremental
+2026-05-18 14:25:31,452 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_extraction.py --input youtube_video_data.csv --comment-pages 0 --skip-transcripts
+2026-05-18 14:26:41,534 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_cleaning.py --incremental
+2026-05-18 14:28:45,440 [INFO] Scheduler started — interval 30 min, lookback 2h.
+2026-05-18 14:28:45,441 [INFO] ================================================================
+2026-05-18 14:28:45,441 [INFO] Pipeline started — lookback 2h — since 2026-05-18T06:58:45Z
+2026-05-18 14:28:45,441 [INFO] ================================================================
+2026-05-18 14:28:45,441 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_extraction.py --published-after 2026-05-18T06:58:45Z --incremental
+2026-05-18 14:29:02,424 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_extraction.py --input youtube_video_data.csv --comment-pages 0 --skip-transcripts
+2026-05-18 14:30:05,012 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_data_cleaning.py --incremental
+2026-05-18 14:40:17,208 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_feature_engineering.py --incremental
+2026-05-18 14:42:00,160 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_tracking_updater.py
+2026-05-18 14:44:28,569 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_narrative_detection.py
+2026-05-18 14:44:58,552 [ERROR] Stage failed: youtube_narrative_detection.py (exit 1)
+2026-05-18 14:44:58,554 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_virality_predict.py
+2026-05-18 14:45:04,212 [ERROR] Stage failed: youtube_virality_predict.py (exit 1)
+2026-05-18 14:45:04,214 [INFO]   >> C:\Users\twnkl\AppData\Local\Programs\Python\Python313\python.exe youtube_alert_engine.py
+2026-05-18 14:45:14,578 [INFO] Pipeline completed at 14:45:14.
+2026-05-18 14:45:14,580 [INFO] Next run in 30 minutes.
