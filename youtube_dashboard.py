@@ -328,9 +328,9 @@ def pick_top_row(df: pd.DataFrame, scenario: str) -> dict:
         return {}
 
     scenario_sort = {
-        "Scenario A": ["pharma_risk_score", "toxicity_score", "viral_probability"],
-        "Scenario B": ["viral_probability",  "trend_score",    "growth_acceleration"],
-        "Scenario C": ["toxicity_score",     "pharma_risk_score", "viral_probability"],
+        "Highest Regulatory Risk":  ["pharma_risk_score", "toxicity_score",    "viral_probability"],
+        "Highest Viral Threat":     ["viral_probability",  "trend_score",       "growth_acceleration"],
+        "Highest Toxicity Signal":  ["toxicity_score",     "pharma_risk_score", "viral_probability"],
     }
 
     # pick the sort priority list for this scenario
@@ -579,9 +579,9 @@ def render_sidebar(df: pd.DataFrame):
 
 def page_virality_predictor(df: pd.DataFrame):
     scenarios = [
-        "Scenario A — Off-label Claims",
-        "Scenario B — Clinical Trial",
-        "Scenario C — Brand Sentiment",
+        "Highest Regulatory Risk",
+        "Highest Viral Threat",
+        "Highest Toxicity Signal",
     ]
     scenario = st.radio("scenario", scenarios, horizontal=True, label_visibility="collapsed")
     st.markdown("<hr style='border-color:#192840;margin:4px 0 16px 0;'>", unsafe_allow_html=True)
