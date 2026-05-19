@@ -397,10 +397,119 @@ def extract_topics(
 
 
 # =====================================
-# CLUSTER TOPIC NAMING (TF-IDF)
+# NARRATIVE TOPIC DEFINITIONS
 # =====================================
 
-def generate_cluster_topic_names(df, n_terms=4):
+NARRATIVE_TOPIC_DEFINITIONS = {
+    "Off-label Claims": [
+        "off label", "off-label", "unapproved use", "unlicensed",
+        "unauthorized use", "not approved", "non approved",
+        "used for", "prescribed for", "treating with",
+    ],
+    "Safety & Side Effects": [
+        "side effect", "side effects", "adverse event", "adverse reaction",
+        "adverse effects", "reaction", "harm", "injury", "injured",
+        "complication", "complications", "negative effect",
+    ],
+    "Clinical Trial Results": [
+        "clinical trial", "phase 1", "phase 2", "phase 3", "phase 4",
+        "placebo", "efficacy", "randomized", "double blind", "study results",
+        "trial results", "research study", "participants", "endpoint",
+    ],
+    "Patient Experience": [
+        "my experience", "my story", "personal story", "patient", "patients",
+        "living with", "diagnosed", "my doctor", "i was prescribed",
+        "i took", "i started", "how i", "my journey", "testimonial",
+    ],
+    "Regulatory & Legal Action": [
+        "fda warning", "ema warning", "recall", "market withdrawal",
+        "lawsuit", "litigation", "class action", "safety alert",
+        "black box warning", "regulatory action", "pharmacovigilance",
+        "post market", "compliance", "enforcement",
+    ],
+    "Pharma Safety Alert": [
+        "death", "died", "fatal", "fatality", "hospitalized",
+        "hospitalisation", "emergency", "serious injury", "dangerous",
+        "unsafe", "hazardous", "toxic", "toxicity", "overdose",
+    ],
+    "Misinformation & False Claims": [
+        "fake cure", "miracle", "cure all", "conspiracy", "fake news",
+        "misinformation", "natural cure", "big pharma lies",
+        "alternative medicine", "homeopathy", "detox", "scam",
+    ],
+    "Competitor & Brand Comparison": [
+        "abbvie", "sanofi", "regeneron", "bayer", "eli lilly",
+        "compared to", "better than", "switch from", "versus",
+        "alternative to", "competitor", "biosimilar switch",
+    ],
+    "Brand Sentiment & Reviews": [
+        "brand", "reputation", "opinion", "review", "rating",
+        "trust", "recommend", "disappointed", "satisfied",
+        "happy with", "unhappy", "works well", "does not work",
+    ],
+    "Contraception & IUD": [
+        "nuvaring", "nexplanon", "mirena", "kyleena", "implanon",
+        "iud", "implant", "birth control", "contraception",
+        "paragard", "intrauterine", "hormonal contraception",
+    ],
+    "Fertility & IVF": [
+        "ivf", "fertility", "infertility", "embryo", "egg freezing",
+        "ovarian stimulation", "gonadotropin", "puregon", "gonal",
+        "embryo transfer", "fertility treatment", "ovulation induction",
+    ],
+    "Dermatology & Psoriasis": [
+        "psoriasis", "eczema", "atopic dermatitis", "dupixent",
+        "skin rash", "plaque", "itching", "pruritus", "vtama",
+        "tapinarof", "skin condition", "dermatology",
+    ],
+    "Immunology & Biologics": [
+        "biosimilar", "biologic", "humira", "adalimumab", "renflexis",
+        "rheumatoid arthritis", "crohn", "ulcerative colitis",
+        "ankylosing spondylitis", "rinvoq", "biologic therapy",
+    ],
+    "Respiratory & Asthma": [
+        "asthma", "singulair", "montelukast", "allergy", "inhaler",
+        "bronchospasm", "nasonex", "dulera", "allergic rhinitis",
+        "respiratory", "breathing", "eosinophilic",
+    ],
+    "Migraine Treatment": [
+        "migraine", "headache", "maxalt", "rizatriptan", "cgrp",
+        "emgality", "rayvow", "acute migraine", "chronic migraine",
+        "migraine attack", "prevention",
+    ],
+    "Hair Loss Treatment": [
+        "hair loss", "propecia", "finasteride", "alopecia",
+        "baldness", "thinning hair", "hairfall", "male pattern",
+        "androgenetic",
+    ],
+    "Women's Health & Menopause": [
+        "menopause", "hot flashes", "hrt", "hormone replacement",
+        "vaginal", "duavive", "prometrium", "xaciato",
+        "perimenopause", "estrogen", "progesterone",
+    ],
+    "Drug Pricing & Access": [
+        "price", "cost", "afford", "insurance", "coverage",
+        "generic", "expensive", "copay", "out of pocket",
+        "drug access", "healthcare cost", "unaffordable",
+    ],
+    "Influencer & Sponsored Content": [
+        "influencer", "sponsored", "paid partnership", "ad",
+        "ambassador", "gifted", "collab", "promotion",
+        "social media", "instagram", "tiktok", "youtube channel",
+    ],
+    "Treatment & Dosage Discussion": [
+        "dosage", "dose", "prescription", "prescribed", "mg",
+        "treatment plan", "medication", "therapy",
+        "how to take", "when to take", "injection", "tablet",
+    ],
+}
+
+
+# =====================================
+# CLUSTER TOPIC NAMING
+# =====================================
+
+def generate_cluster_topic_names(df):
 
     print(
         "\nGenerating cluster topic names..."
@@ -418,52 +527,63 @@ def generate_cluster_topic_names(df, n_terms=4):
         .to_dict()
     )
 
-    cluster_ids = list(cluster_texts.keys())
-    corpus = [cluster_texts[cid] for cid in cluster_ids]
+    topic_names = {}
 
-    if len(corpus) < 2:
-        return {cid: "general topic" for cid in cluster_ids}
+    for cid, text in cluster_texts.items():
+
+        text_lower = text.lower()
+
+        scores = {}
+
+        for topic_name, keywords in (
+            NARRATIVE_TOPIC_DEFINITIONS.items()
+        ):
+            score = sum(
+                1 for kw in keywords
+                if kw in text_lower
+            )
+            if score > 0:
+                scores[topic_name] = score
+
+        if scores:
+            topic_names[cid] = max(
+                scores, key=scores.get
+            )
+        else:
+            # Fallback: TF-IDF top terms for unmatched clusters
+            topic_names[cid] = _tfidf_fallback(
+                text_lower, cid
+            )
+
+    return topic_names
+
+
+def _tfidf_fallback(text, cid):
 
     try:
 
         vectorizer = TfidfVectorizer(
             stop_words="english",
-            max_features=5000,
-            min_df=1,
+            max_features=500,
             ngram_range=(1, 2),
         )
 
-        tfidf_matrix = vectorizer.fit_transform(corpus)
+        tfidf_matrix = vectorizer.fit_transform([text])
         feature_names = vectorizer.get_feature_names_out()
+        row = tfidf_matrix[0].toarray().flatten()
+        top_indices = row.argsort()[-3:][::-1]
 
-        topic_names = {}
+        terms = [
+            feature_names[i].title()
+            for i in top_indices
+            if row[i] > 0
+        ]
 
-        for i, cid in enumerate(cluster_ids):
+        return " ".join(terms) if terms else f"Cluster {cid}"
 
-            row = tfidf_matrix[i].toarray().flatten()
-            top_indices = row.argsort()[-n_terms:][::-1]
-            top_terms = [
-                feature_names[idx]
-                for idx in top_indices
-                if row[idx] > 0
-            ]
+    except Exception:
 
-            if top_terms:
-                topic_names[cid] = " ".join(
-                    t.title() for t in top_terms
-                )
-            else:
-                topic_names[cid] = f"Cluster {cid}"
-
-        return topic_names
-
-    except Exception as error:
-
-        print(
-            f"\nTF-IDF topic naming failed: {error}"
-        )
-
-        return {cid: f"Cluster {cid}" for cid in cluster_ids}
+        return f"Cluster {cid}"
 
 
 # =====================================
