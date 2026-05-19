@@ -22,8 +22,9 @@ A pharma-focused YouTube intelligence platform that continuously ingests video a
    - [youtube_alert_engine.py](#59-youtube_alert_enginepy)
    - [youtube_pipeline_runner.py](#510-youtube_pipeline_runnerpy)
    - [youtube_dashboard.py](#511-youtube_dashboardpy)
-6. [CSV Files Reference](#6-csv-files-reference)
-7. [Running the Pipeline](#7-running-the-pipeline)
+6. [Score Range Labels](#6-score-range-labels)
+7. [CSV Files Reference](#7-csv-files-reference)
+8. [Running the Pipeline](#8-running-the-pipeline)
 8. [Model Performance](#8-model-performance)
 9. [Dashboard Pages](#9-dashboard-pages)
 10. [API Quota Guide](#10-api-quota-guide)
@@ -542,7 +543,52 @@ Avg Toxicity / Avg Pharma Risk / Avg Viral Score KPIs. Toxicity vs virality scat
 
 ---
 
-## 6. CSV Files Reference
+## 6. Score Range Labels
+
+Every scoring column has a companion `_range` column added automatically by `youtube_narrative_detection.py`, `youtube_virality_predict.py`, and `youtube_alert_engine.py`. The original numeric column is always preserved.
+
+**Example:** `toxicity_score = 0.72` → `toxicity_score_range = "High"`
+
+### Thresholds
+
+| Column | Low | Medium | High | Scale |
+|--------|-----|--------|------|-------|
+| `viral_probability` | < 0.40 | 0.40 – 0.70 | ≥ 0.70 | 0–1 probability |
+| `toxicity_score` | < 0.30 | 0.30 – 0.60 | ≥ 0.60 | 0–1 probability |
+| `sentiment_score` | < 0.40 | 0.40 – 0.70 | ≥ 0.70 | 0–1 probability |
+| `emotion_score` | < 0.40 | 0.40 – 0.70 | ≥ 0.70 | 0–1 probability |
+| `narrative_similarity_score` | < 0.40 | 0.40 – 0.70 | ≥ 0.70 | 0–1 cosine similarity |
+| `virality_score` | < 0.40 | 0.40 – 0.70 | ≥ 0.70 | 0–1 weighted score |
+| `ravs_score` | < 0.35 | 0.35 – 0.70 | ≥ 0.70 | 0–1 weighted score |
+| `alert_score` | < 0.35 | 0.35 – 0.70 | ≥ 0.70 | 0–1 weighted score |
+| `engagement_rate` | < 0.02 | 0.02 – 0.05 | ≥ 0.05 | fraction (likes+comments / views) |
+| `pharma_risk_score` | 0 | 1 – 2 | ≥ 3 | integer keyword count |
+| `cluster_volume` | < 10 | 10 – 30 | ≥ 30 | integer video count |
+| `views_per_hour` | < 100 | 100 – 1,000 | ≥ 1,000 | views / hour since publish |
+| `likes_per_hour` | < 10 | 10 – 100 | ≥ 100 | likes / hour since publish |
+| `comments_per_hour` | < 5 | 5 – 50 | ≥ 50 | comments / hour since publish |
+| `view_velocity` | < 100 | 100 – 1,000 | ≥ 1,000 | view change / hour between snapshots |
+| `like_velocity` | < 10 | 10 – 100 | ≥ 100 | like change / hour between snapshots |
+| `comment_velocity` | < 5 | 5 – 50 | ≥ 50 | comment change / hour between snapshots |
+| `growth_acceleration` | ≤ 0 | 0 – 500 | ≥ 500 | velocity change / hour |
+| `trend_score` | < 0.30 | 0.30 – 0.70 | ≥ 0.70 | weighted velocity composite |
+| `narrative_trend_score` | < 5 | 5 – 15 | ≥ 15 | weighted cluster trend composite |
+
+### Where range columns appear
+
+| File | Range columns added for |
+|------|------------------------|
+| `youtube_narrative_detection.csv` | All scores available at that stage |
+| `youtube_virality_predictions.csv` | All scores including `viral_probability` |
+| `youtube_alerts.csv` | All scores including `ravs_score`, `alert_score` |
+
+### Adjusting thresholds
+
+Thresholds are defined in `SCORE_RANGE_THRESHOLDS` at the top of each script. Edit the `(low, high)` tuple for any column to recalibrate — no other code needs changing.
+
+---
+
+## 7. CSV Files Reference
 
 | File | Created by | Read by | Description |
 |------|-----------|---------|-------------|
@@ -563,7 +609,7 @@ Avg Toxicity / Avg Pharma Risk / Avg Viral Score KPIs. Toxicity vs virality scat
 
 ---
 
-## 7. Running the Pipeline
+## 8. Running the Pipeline
 
 **Continuous monitoring (recommended):**
 ```bash

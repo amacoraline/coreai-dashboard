@@ -13,6 +13,66 @@ ALERT_OUTPUT_FILE = (
     "youtube_alerts.csv"
 )
 
+
+# ==========================================
+# SCORE RANGE THRESHOLDS
+# ==========================================
+
+SCORE_RANGE_THRESHOLDS = {
+    # 0–1 probability / fraction scores
+    "viral_probability":          (0.40, 0.70),
+    "toxicity_score":             (0.30, 0.60),
+    "sentiment_score":            (0.40, 0.70),
+    "emotion_score":              (0.40, 0.70),
+    "narrative_similarity_score": (0.40, 0.70),
+    "ravs_score":                 (0.35, 0.70),
+    "alert_score":                (0.35, 0.70),
+    "virality_score":             (0.40, 0.70),
+    # Engagement rate (fraction, 0–1+)
+    "engagement_rate":            (0.02, 0.05),
+    # Count-based
+    "pharma_risk_score":          (1,    3   ),
+    "cluster_volume":             (10,   30  ),
+    # Per-hour rates
+    "views_per_hour":             (100,  1000),
+    "likes_per_hour":             (10,   100 ),
+    "comments_per_hour":          (5,    50  ),
+    # Velocity (change per hour between snapshots)
+    "view_velocity":              (100,  1000),
+    "like_velocity":              (10,   100 ),
+    "comment_velocity":           (5,    50  ),
+    "growth_acceleration":        (0,    500 ),
+    # Trend / narrative scores
+    "trend_score":                (0.30, 0.70),
+    "narrative_trend_score":      (5,    15  ),
+}
+
+
+def add_score_range_labels(df):
+
+    for col, (low_thresh, high_thresh) in (
+        SCORE_RANGE_THRESHOLDS.items()
+    ):
+
+        if col not in df.columns:
+            continue
+
+        series = pd.to_numeric(
+            df[col], errors="coerce"
+        ).fillna(0)
+
+        df[f"{col}_range"] = np.select(
+            [
+                series < low_thresh,
+                (series >= low_thresh) & (series < high_thresh),
+                series >= high_thresh,
+            ],
+            ["Low", "Medium", "High"],
+            default="Low",
+        )
+
+    return df
+
 TOP_ALERT_COUNT = 100
 
 VIRALITY_THRESHOLD = 0.80
@@ -498,8 +558,6 @@ def finalize_alerts(df):
         "alert_type",
         "alert_priority",
         "alert_reason",
-        "alert_score",
-        "ravs_score",
         "ravs_speed_of_engagement",
         "ravs_regulatory_relevance",
         "ravs_safety_implications",
@@ -507,15 +565,27 @@ def finalize_alerts(df):
         "ravs_topic_sensitivity",
 
         "viral_probability",
+        "viral_probability_range",
         "trend_score",
+        "trend_score_range",
         "growth_acceleration",
+        "growth_acceleration_range",
 
         "sentiment_label",
         "emotion_label",
         "toxicity_label",
 
         "toxicity_score",
+        "toxicity_score_range",
         "pharma_risk_score",
+        "pharma_risk_score_range",
+
+        "engagement_rate",
+        "engagement_rate_range",
+        "views_per_hour",
+        "views_per_hour_range",
+        "view_velocity",
+        "view_velocity_range",
 
         "narrative_cluster_id",
         "dominant_topic_id",
@@ -523,7 +593,14 @@ def finalize_alerts(df):
         "cluster_topic_name",
 
         "cluster_volume",
+        "cluster_volume_range",
         "narrative_trend_score",
+        "narrative_trend_score_range",
+
+        "ravs_score",
+        "ravs_score_range",
+        "alert_score",
+        "alert_score_range",
 
         "view_count",
         "like_count",
@@ -553,6 +630,7 @@ def build_alert_pipeline(df):
 
     df = preprocess(df)
     df = compute_ravs_score(df)
+    df = add_score_range_labels(df)
 
     alert_frames = []
 

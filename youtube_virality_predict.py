@@ -20,6 +20,53 @@ import pandas as pd
 MODEL_FILE = "youtube_virality_model.pkl"
 PREDICTION_FILE = "youtube_virality_predictions.csv"
 
+SCORE_RANGE_THRESHOLDS = {
+    "viral_probability":          (0.40, 0.70),
+    "toxicity_score":             (0.30, 0.60),
+    "sentiment_score":            (0.40, 0.70),
+    "emotion_score":              (0.40, 0.70),
+    "narrative_similarity_score": (0.40, 0.70),
+    "virality_score":             (0.40, 0.70),
+    "engagement_rate":            (0.02, 0.05),
+    "pharma_risk_score":          (1,    3   ),
+    "cluster_volume":             (10,   30  ),
+    "views_per_hour":             (100,  1000),
+    "likes_per_hour":             (10,   100 ),
+    "comments_per_hour":          (5,    50  ),
+    "view_velocity":              (100,  1000),
+    "like_velocity":              (10,   100 ),
+    "comment_velocity":           (5,    50  ),
+    "growth_acceleration":        (0,    500 ),
+    "trend_score":                (0.30, 0.70),
+    "narrative_trend_score":      (5,    15  ),
+}
+
+
+def add_score_range_labels(df):
+
+    for col, (low_thresh, high_thresh) in (
+        SCORE_RANGE_THRESHOLDS.items()
+    ):
+
+        if col not in df.columns:
+            continue
+
+        series = pd.to_numeric(
+            df[col], errors="coerce"
+        ).fillna(0)
+
+        df[f"{col}_range"] = np.select(
+            [
+                series < low_thresh,
+                (series >= low_thresh) & (series < high_thresh),
+                series >= high_thresh,
+            ],
+            ["Low", "Medium", "High"],
+            default="Low",
+        )
+
+    return df
+
 FEATURE_COLUMNS = [
     # Engagement velocity
     "engagement_rate",
@@ -102,6 +149,8 @@ def main() -> None:
 
     df["viral_probability"] = np.round(probabilities, 4)
     df["predicted_viral"] = (df["viral_probability"] >= 0.7).astype(int)
+
+    df = add_score_range_labels(df)
 
     df.to_csv(PREDICTION_FILE, index=False, encoding="utf-8-sig")
     print(f"\nSaved: {PREDICTION_FILE}")
